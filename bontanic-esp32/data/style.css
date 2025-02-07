@@ -34,18 +34,24 @@ body {
   font-size: 1.2rem;
   font-weight: bold;
   color: #2E7D32;  /* Dark green */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.material-icons {
+  font-size: 1.4rem;  /* Slightly larger than text */
+  vertical-align: middle;
 }
 
 .card-title-text {
-  margin-top: -4px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #2E7D32;  /* Dark green */
+  margin-top: 2px;  /* Fine-tune vertical alignment */
 }
 
 .reading {
   font-size: 1.2rem;
-  color: #43A047;  /* Medium green */
+  color: #333;  /* Dark grey almost black */
 }
 .footer {
   position: fixed;
