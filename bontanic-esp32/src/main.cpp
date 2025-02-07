@@ -58,9 +58,14 @@ void displayStatusBar() {
     
     // Display IP Address in white
     display.setTextColor(GxEPD_WHITE);
-    String ip = WiFi.localIP().toString();
-    display.setCursor(5, 15);
-    display.print(ip);
+    if(WiFi.status() == WL_CONNECTED) {
+        String ip = WiFi.localIP().toString();
+        display.setCursor(5, 15);
+        display.print(ip);
+    } else {
+        display.setCursor(5, 15);
+        display.print("No Wifi, yet.");
+    }
     
     // Draw online indicator (small circle)
     if (WiFi.status() == WL_CONNECTED) {
@@ -109,7 +114,7 @@ void displayMessage(const char* message)
             
             display.setCursor(x, yPosition);
             display.print(line);
-            yPosition += 30;  // Increased line spacing
+            yPosition += 25;  // Increased line spacing
         }
     }
     while (display.nextPage());
@@ -155,13 +160,13 @@ String getSensorReadings() {
     // Only update readings if values have changed
     bool hasChanged = false;
     
-    if (!isnan(temperature) && abs(temperature - lastTemp) > 0.1) {
+    if (!isnan(temperature) && abs(temperature - lastTemp) > 0.5) {
         readings["temperature"] = String(temperature, 1);
         lastTemp = temperature;
         hasChanged = true;
     }
     
-    if (!isnan(humidity) && abs(humidity - lastHumidity) > 0.1) {
+    if (!isnan(humidity) && abs(humidity - lastHumidity) > 1) {
         readings["humidity"] = String(humidity, 1);
         lastHumidity = humidity;
         hasChanged = true;
