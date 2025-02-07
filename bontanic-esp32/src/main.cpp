@@ -12,7 +12,9 @@
 #include "LittleFS.h"
 #include <Arduino_JSON.h>
 #include <esp_system.h>
-
+#define ENABLE_GxEPD2_GFX 0
+#include <GxEPD2_BW.h>
+#include <Fonts/FreeMonoBold9pt7b.h>
 // Forward declaration of readHelloWorld
 void readHelloWorld();
 
@@ -27,6 +29,10 @@ JSONVar readings;
 // Timer variables
 unsigned long lastTime = 0;
 unsigned long timerDelay = 100;  // Send data every 2 seconds
+
+// 1.54" EPD Module
+//GxEPD2_BW<GxEPD2_154, GxEPD2_154::HEIGHT> display(GxEPD2_154(/*CS=*/ 27, /*DC=*/ 14, /*RST=*/ 12, /*BUSY=*/ 13)); // GDEP015OC1 200x200, IL3829
+GxEPD2_BW<GxEPD2_154_D67, GxEPD2_154_D67::HEIGHT> display(GxEPD2_154_D67(/*CS=*/ 27, /*DC=*/ 14, /*RST=*/ 12, /*BUSY=*/ 13)); // GDEP015OC1 200x200, IL3829
 
 // Get Sensor Readings and return JSON object
 String getSensorReadings() {
@@ -88,17 +94,42 @@ void initWebSocket() {
     server.addHandler(&ws);
 }
 
+void displayMessage(const char* message)
+{
+    display.setRotation(1);
+    display.setFont(&FreeMonoBold9pt7b);
+    display.setTextColor(GxEPD_BLACK);
+    int16_t tbx, tby; 
+    uint16_t tbw, tbh;
+    display.getTextBounds(message, 0, 0, &tbx, &tby, &tbw, &tbh);
+    uint16_t x = ((display.width() - tbw) / 2) - tbx;
+    uint16_t y = ((display.height() - tbh) / 2) - tby;
+    display.setFullWindow();
+    display.firstPage();
+    do
+    {
+        display.fillScreen(GxEPD_WHITE);
+        display.setCursor(x, y);
+        display.print(message);
+    }
+    while (display.nextPage());
+}
+
 void setup() {
     Serial.begin(115200);
+    
+    // Initialize display early
+    display.init(115200, true, 2, false);
+    displayMessage("Connecting...");
     
     // Set device hostname
     WiFi.setHostname("bontanic");
     
     bool res = wm.autoConnect("AutoConnectAP");
     if(!res) {
-        Serial.println("Failed to connect");
+        displayMessage("WiFi Failed!");
     } else {
-        Serial.println("Connected to WiFi");
+        displayMessage("Connected!");
         
         // OTA Setup
         ArduinoOTA.setHostname("bontanic"); // Same hostname as above
