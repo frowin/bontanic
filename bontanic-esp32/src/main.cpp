@@ -94,6 +94,26 @@ void initWebSocket() {
     server.addHandler(&ws);
 }
 
+void displayStatusBar() {
+    display.setRotation(1);
+    display.setFont(&FreeMonoBold9pt7b);
+    display.setTextColor(GxEPD_BLACK);
+    
+    // Draw black top bar
+    display.fillRect(0, 0, display.width(), 20, GxEPD_BLACK);
+    
+    // Display IP Address in white
+    display.setTextColor(GxEPD_WHITE);
+    String ip = WiFi.localIP().toString();
+    display.setCursor(5, 15);
+    display.print(ip);
+    
+    // Draw online indicator (small circle)
+    if (WiFi.status() == WL_CONNECTED) {
+        display.fillCircle(190, 10, 5, GxEPD_WHITE);
+    }
+}
+
 void displayMessage(const char* message)
 {
     display.setRotation(1);
@@ -102,13 +122,16 @@ void displayMessage(const char* message)
     int16_t tbx, tby; 
     uint16_t tbw, tbh;
     display.getTextBounds(message, 0, 0, &tbx, &tby, &tbw, &tbh);
+    // Adjust y position to account for status bar
     uint16_t x = ((display.width() - tbw) / 2) - tbx;
-    uint16_t y = ((display.height() - tbh) / 2) - tby;
+    uint16_t y = ((display.height() - tbh) / 2) - tby + 20; // Added +20 to move below status bar
     display.setFullWindow();
     display.firstPage();
     do
     {
         display.fillScreen(GxEPD_WHITE);
+        displayStatusBar();  // Draw status bar first
+        display.setTextColor(GxEPD_BLACK);
         display.setCursor(x, y);
         display.print(message);
     }
