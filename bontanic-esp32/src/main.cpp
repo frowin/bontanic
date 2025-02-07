@@ -73,16 +73,6 @@ void displayMessage(const char* message)
 {
     display.setRotation(1);
     display.setFont(&FreeMonoBold9pt7b);
-    display.setTextColor(GxEPD_BLACK);
-    
-    // Calculate text bounds for each line
-    String messageStr = String(message);
-    int16_t tbx, tby;
-    uint16_t tbw, tbh;
-    
-    // Split message into lines
-    int lineHeight = 25;  // Increased line height for better readability
-    int yPosition = 45;   // Start position below status bar
     
     display.setFullWindow();
     display.firstPage();
@@ -91,13 +81,18 @@ void displayMessage(const char* message)
         display.fillScreen(GxEPD_WHITE);
         displayStatusBar();  // Draw status bar first
         
-        // Handle multiline text
+        // Set text color to black for main content
+        display.setTextColor(GxEPD_BLACK);
+        
+        // Print each line
+        int yPosition = 50;  // Start below status bar
+        String messageStr = String(message);
         int start = 0;
         int newline;
-        String line;
         
         while (start < messageStr.length()) {
             newline = messageStr.indexOf('\n', start);
+            String line;
             if (newline == -1) {
                 line = messageStr.substring(start);
                 start = messageStr.length();
@@ -107,12 +102,14 @@ void displayMessage(const char* message)
             }
             
             // Center each line
+            int16_t tbx, tby;
+            uint16_t tbw, tbh;
             display.getTextBounds(line.c_str(), 0, 0, &tbx, &tby, &tbw, &tbh);
             uint16_t x = ((display.width() - tbw) / 2) - tbx;
             
             display.setCursor(x, yPosition);
             display.print(line);
-            yPosition += lineHeight;
+            yPosition += 30;  // Increased line spacing
         }
     }
     while (display.nextPage());
@@ -120,15 +117,17 @@ void displayMessage(const char* message)
 
 // Finally declare displaySensorData
 void displaySensorData() {
+    // Always update display content, but respect the update interval
     if (millis() - lastDisplayUpdate < DISPLAY_UPDATE_INTERVAL) {
         return;
     }
     
+    // Create the display message with current values
     String message = "Temperature\n";
-    message += String(lastTemp, 1) + " C\n\n";
+    message += String(lastTemp, 1) + " C\n";
     message += "Humidity\n";
-    message += String(lastHumidity, 1) + " %\n\n";
-    message += "Soil Moisture\n";
+    message += String(lastHumidity, 1) + " %\n";
+    message += "Soil\n";
     message += String(map(lastSoilMoisture, 4095, 0, 0, 100)) + " %";
     
     displayMessage(message.c_str());
@@ -169,10 +168,14 @@ String getSensorReadings() {
     }
     
     if (abs(soilMoisture - lastSoilMoisture) > 5) {
-        readings["soil"] = String(map(soilMoisture, 4095, 0, 0, 100)); // Map to percentage
+        int soilPercent = map(soilMoisture, 4095, 0, 0, 100);
+        readings["soil"] = String(soilPercent);
         lastSoilMoisture = soilMoisture;
         hasChanged = true;
     }
+    
+    // Always update display even if values haven't changed
+    displaySensorData();
     
     // System stats (only include if something changed)
     if (hasChanged) {
