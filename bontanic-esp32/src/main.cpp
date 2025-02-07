@@ -37,7 +37,7 @@ JSONVar readings;
 
 // Timer variables
 unsigned long lastTime = 0;
-unsigned long timerDelay = 100;  // Send data every 2 seconds
+unsigned long timerDelay = 2000;  // Send data every 2 seconds
 
 GxEPD2_BW<GxEPD2_154_D67, GxEPD2_154_D67::HEIGHT> display(GxEPD2_154_D67(/*CS=*/ 27, /*DC=*/ 14, /*RST=*/ 12, /*BUSY=*/ 13)); // GDEP015OC1 200x200, IL3829
 
@@ -558,22 +558,24 @@ void setup() {
 
 void loop() {
     ArduinoOTA.handle();  // This must stay!
-    
+
     if ((millis() - lastTime) > timerDelay) {
         String readings = getSensorReadings();
         
-        // Add this line to process averages using the current readings
         if (readings.length() > 0) {
+            // Send readings to websocket clients
+            notifyClients(readings);
+            
+            // Get current sensor values for averaging
             float temp = dht.readTemperature();
             float humid = dht.readHumidity();
             int soil = analogRead(SOIL_PIN);
             processAverages(temp, humid, soil);
+            
+            // Update display if needed
+            displaySensorData();  // Will only update if interval has passed
         }
         
-        if (readings.length() > 0) {  // Only send if there are changes
-            notifyClients(readings);
-            displaySensorData();  // Will only update if 30s have passed
-        }
         lastTime = millis();
     }
     ws.cleanupClients();

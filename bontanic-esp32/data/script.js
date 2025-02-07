@@ -13,8 +13,13 @@ function onload(event) {
 }
 
 function getReadings(){
-    websocket.send("getReadings");
+    if (websocket.readyState === WebSocket.OPEN) {
+        websocket.send("getReadings");
+    }
 }
+
+// Set up periodic updates
+setInterval(getReadings, 2000);  // Request new readings every 2 seconds
 
 function initWebSocket() {
     console.log('Trying to open a WebSocket connection…');

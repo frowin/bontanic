@@ -45,11 +45,23 @@ body {
   color: #8B0000;  /* Dark red */
 }
 
+.card-title.temperature-icon {
+  color: #8B0000;  /* Dark red */
+}
+
 .card-title.humidity {
   color: #2F4F7F;  /* Dark blue */
 }
 
+.card-title.humidity-icon {
+  color: #2F4F7F;  /* Dark blue */
+}
+
 .card-title.soil {
+  color: #8B4513;  /* Dark brown */
+}
+
+.card-title.soil-icon {
   color: #8B4513;  /* Dark brown */
 }
 
