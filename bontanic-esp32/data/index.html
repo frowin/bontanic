@@ -15,31 +15,36 @@
             <div class="card-grid">
                 <div class="card">
                     <div class="data-indicator"></div>
-                    <p class="card-title"><i class="material-icons" style="color:#2E7D32;">thermostat</i><span class="card-title-text"> Temperature</span></p>
+                    <p class="card-title temperature"><i class="material-icons" style="color:#2E7D32;">thermostat</i><span class="card-title-text"> Temperature</span></p>
                     <p class="reading"><span id="temperature"></span> &deg;C</p>
                 </div>
                 <div class="card">
                     <div class="data-indicator"></div>
-                    <p class="card-title"><i class="material-icons" style="color:#2E7D32;">water_drop</i><span class="card-title-text"> Humidity</span></p>
+                    <p class="card-title humidity"><i class="material-icons" style="color:#2E7D32;">water_drop</i><span class="card-title-text"> Humidity</span></p>
                     <p class="reading"><span id="humidity"></span> &percnt;</p>
                 </div>
                 <div class="card">
                     <div class="data-indicator"></div>
-                    <p class="card-title"><i class="material-icons" style="color:#2E7D32;">grass</i><span class="card-title-text"> Soil Moisture</span></p>
+                    <p class="card-title soil"><i class="material-icons" style="color:#2E7D32;">grass</i><span class="card-title-text"> Soil Moisture</span></p>
                     <p class="reading"><span id="soil"></span> &percnt;</p>
                 </div>
             </div>
+        </div>
+        <div class="download-section">
+            <button id="downloadBtn" class="download-button">
+                <i class="material-icons">download</i> Download Sensor Data
+            </button>
         </div>
         <div class="footer">
             <div class="system-stats">
                 <span>ESP32 Stats:</span>
                 <span>Heap: <span id="heap"></span>KB</span> |
-                <span>CPU: <span id="cpu_freq"></span>MHz</span> |
-                <span>Flash: <span id="flash_size"></span>MB</span> |
-                <span>Sketch: <span id="sketch_size"></span>KB</span> |
-                <span>Free Space: <span id="free_sketch"></span>KB</span>
+                <span>CPU: <span id="cpu"></span>MHz</span> |
+                <span>Flash: <span id="flash"></span>MB</span> |
+                <span>Sketch: <span id="sketch"></span>KB</span> |
+                <span>Free Space: <span id="freespace"></span>KB</span>
             </div>
         </div>
-        <script src="script.js"></script>
+        <script src="script.js" type="module"></script>
     </body>
 </html>

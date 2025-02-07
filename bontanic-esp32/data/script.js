@@ -1,7 +1,12 @@
 var gateway = `ws://${window.location.hostname}/ws`;
 var websocket;
 // Init web socket when the page loads
-window.addEventListener('load', onload);
+window.addEventListener('load', function() {
+    onload();
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        window.location.href = '/downloadcsv';
+    });
+});
 
 function onload(event) {
     initWebSocket();
@@ -48,4 +53,9 @@ function onMessage(event) {
         var key = keys[i];
         document.getElementById(key).innerHTML = myObj[key];
     }
+}
+
+// Add this new function
+function downloadData() {
+    window.location.href = '/download';
 }

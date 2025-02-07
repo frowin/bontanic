@@ -29,6 +29,7 @@ body {
   box-shadow: 2px 2px 12px 1px rgba(46,125,50,0.2);
   border-radius: 5px;
   position: relative;
+  padding-bottom: 20px;
 }
 .card-title {
   font-size: 1.2rem;
@@ -40,6 +41,18 @@ body {
   gap: 5px;
 }
 
+.card-title.temperature {
+  color: #8B0000;  /* Dark red */
+}
+
+.card-title.humidity {
+  color: #2F4F7F;  /* Dark blue */
+}
+
+.card-title.soil {
+  color: #8B4513;  /* Dark brown */
+}
+
 .material-icons {
   font-size: 1.4rem;  /* Slightly larger than text */
   vertical-align: middle;
@@ -48,6 +61,8 @@ body {
 .card-title-text {
   margin-top: 2px;  /* Fine-tune vertical alignment */
 }
+
+
 
 .reading {
   font-size: 1.2rem;
@@ -84,4 +99,36 @@ body {
 .data-indicator.active {
   opacity: 1;
   transition: opacity 0.1s ease-in;
+}
+
+canvas {
+  margin-top: 10px;
+  height: 100px !important;
+}
+
+.download-section {
+    margin: 20px auto;
+    text-align: center;
+}
+
+.download-button {
+    background-color: #2E7D32;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.download-button:hover {
+    background-color: #1B5E20;
+}
+
+.download-button .material-icons {
+    font-size: 1.2rem;
 }
