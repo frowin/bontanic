@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>ESP IOT DASHBOARD</title>
+        <title>bontanic - Track your shrooms & plants</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" type="image/png" href="favicon.png">
         <link rel="stylesheet" type="text/css" href="style.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body>
         <div class="topnav">
-            <h1>SENSOR READINGS (WEBSOCKET)</h1>
+            <h1>bontanic - Track your shrooms & plants</h1>
         </div>
         <div class="content">
             <div class="card-grid">
                 <div class="card">
-                    <p class="card-title"><i class="fas fa-thermometer-threequarters" style="color:#059e8a;"></i> Temperature</p>
+                    <div class="data-indicator"></div>
+                    <p class="card-title"><i class="material-icons" style="color:#2E7D32;">thermostat</i><span class="card-title-text"> Temperature</span></p>
                     <p class="reading"><span id="temperature"></span> &deg;C</p>
                 </div>
                 <div class="card">
-                    <p class="card-title"> Humidity</p>
+                    <div class="data-indicator"></div>
+                    <p class="card-title"><i class="material-icons" style="color:#2E7D32;">water_drop</i><span class="card-title-text"> Humidity</span></p>
                     <p class="reading"><span id="humidity"></span> &percnt;</p>
                 </div>
                 <div class="card">
-                    <p class="card-title"> Pressure</p>
-                    <p class="reading"><span id="pressure"></span> hpa</p>
+                    <div class="data-indicator"></div>
+                    <p class="card-title"><i class="material-icons" style="color:#2E7D32;">grass</i><span class="card-title-text"> Soil Moisture</span></p>
+                    <p class="reading"><span id="soil"></span> &percnt;</p>
                 </div>
             </div>
         </div>

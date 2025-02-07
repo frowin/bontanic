@@ -36,6 +36,14 @@ function onMessage(event) {
     var myObj = JSON.parse(event.data);
     var keys = Object.keys(myObj);
 
+    // Flash indicators for all cards
+    document.querySelectorAll('.data-indicator').forEach(indicator => {
+        indicator.classList.add('active');
+        setTimeout(() => {
+            indicator.classList.remove('active');
+        }, 1000);
+    });
+
     for (var i = 0; i < keys.length; i++){
         var key = keys[i];
         document.getElementById(key).innerHTML = myObj[key];
