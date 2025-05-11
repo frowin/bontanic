@@ -352,26 +352,17 @@ String getSensorReadings() {
         return "";
     }
 
-    bool hasChanged = false;
     
-    if (abs(temperature - lastTemp) > TEMP_THRESHOLD) {
-        readings["temperature"] = String(temperature, 1);
-        lastTemp = temperature;
-        hasChanged = true;
-    }
-    
-    if (abs(humidity - lastHumidity) > HUMID_THRESHOLD) {
-        readings["humidity"] = String(humidity, 1);
-        lastHumidity = humidity;
-        hasChanged = true;
-    }
+    readings["temperature"] = String(temperature, 1);
+    lastTemp = temperature;
+
+
+    readings["humidity"] = String(humidity, 1);
+    lastHumidity = humidity;
     
     int soilPercent = map(soilMoisture, 4095, 0, 0, 100);
-    if (abs(soilPercent - lastSoilMoisture) > SOIL_THRESHOLD) {
-        readings["soil"] = String(soilPercent);
-        lastSoilMoisture = soilPercent;
-        hasChanged = true;
-    }
+    readings["soil"] = String(soilPercent);
+    lastSoilMoisture = soilPercent;
     
     // Always include ESP32 stats
     readings["heap"] = String(ESP.getFreeHeap() / 1024);       // Convert to KB
@@ -380,9 +371,7 @@ String getSensorReadings() {
     readings["sketch"] = String(ESP.getSketchSize() / 1024);   // Convert to KB
     readings["freespace"] = String(ESP.getFreeSketchSpace() / 1024);  // Convert to KB
     
-    if (hasChanged) {
-        processAverages(temperature, humidity, soilPercent);
-    }
+    processAverages(temperature, humidity, soilPercent);
 
     return JSON.stringify(readings);
 }
